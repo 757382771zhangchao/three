@@ -1,7 +1,8 @@
 <script setup>
 import * as THREE from 'three'
 
-console.log(THREE);
+// 引入轨道控制器
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // 创建场景
 const scene = new THREE.Scene()
 
@@ -32,18 +33,32 @@ scene.add(cube)
 camera.position.z = 5;  // z是正对我们方向，x是横轴，y是垂直
 camera.lookAt(0,0,0)  // 相机默认看向哪里。默认是原点
 
+// 添加世界坐标辅助器
+const axesHelper = new THREE.AxesHelper(5) // 线段长度5
+scene.add(axesHelper)
+
+// 创建轨道控制器，可以控制相机，可以通过监听不同的dom的轨道控制器，进行各种操作
+const controls = new OrbitControls(camera, renderer.domElement);
+// 设置阻尼惯性
+controls.enableDamping = true
+// 设置阻尼系数,默认0.05调小相当于没有阻碍，加大滑动
+controls.dampingFactor = 0.01
+
 // 渲染函数
 function animate() {
+  // 更新控件，这只阻尼惯性，需要执行更新函数
+  controls.update()
   // 请求动画帧，会一帧一帧的调用动画函数
   requestAnimationFrame(animate)
 
-  // 不停旋转
-  cube.rotation.x += 0.01
-  cube.rotation.y += 0.01
+  // // 不停旋转
+  // cube.rotation.x += 0.01
+  // cube.rotation.y += 0.01
   // 不停的渲染
   renderer.render(scene,camera)
 }
 animate()
+// renderer.render(scene,camera)
 
 
 </script>
