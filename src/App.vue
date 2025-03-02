@@ -37,20 +37,25 @@ const vertices = new Float32Array([
   -1.0,
   1.0, // v0
   1.0,
-  1.0,
-  1.0, // v2
-  1.0,
   -1.0,
   1.0, // v1
+  1.0,
+  1.0,
+  1.0, // v2
+  -1.0,
+  1.0,
+  1.0,
 ]); // 顶点，对应的xyz，三个点的坐标，有顺序，逆时针为正面，顺时针为反面
 geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3)); // 对几何添加坐标
+
 const material = new THREE.MeshBasicMaterial({
   color: 0xff0000,
   side: THREE.DoubleSide,
   // wireframe:true
 }); // 创建材质
-material.wireframe = true
+material.wireframe = true;
 const cube = new THREE.Mesh(geometry, material); // 将几何添加到场景中
+
 scene.add(cube);
 
 // 设置相机位置
@@ -71,7 +76,7 @@ controls.dampingFactor = 0.01;
 // 渲染函数
 function animate() {
   // 更新控件，这只阻尼惯性，需要执行更新函数
-  controls.update();
+  // controls.update();
   // 请求动画帧，会一帧一帧的调用动画函数
   requestAnimationFrame(animate);
 
@@ -83,25 +88,6 @@ function animate() {
 }
 animate();
 
-// 调试开发
-let objGui = {
-  fullscreen: function () {
-    // 全屏
-    document.body.requestFullscreen();
-  },
-};
-
-// 创建GUI
-let gui = new GUI();
-gui.add(objGui, "fullscreen").name("全屏");
-let folder = gui.addFolder("立方体位置");
-
-// 监听窗口变化，实现窗口动态变化
-window.addEventListener("resize", () => {
-  renderer.setSize(window.innerWidth, window.innerHeight); // 重置渲染器窗口
-  camera.aspect = window.innerWidth / window.innerHeight; // 重置相机宽高比
-  camera.updateProjectionMatrix(); // 更新相机矩阵投影
-});
 </script>
 
 <template>
